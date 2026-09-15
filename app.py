@@ -154,7 +154,7 @@ body {
 '''
 , unsafe_allow_html=True)
 
-st.title("📊 نظام استعراض بيانات المتاجر")
+st.title("???? ??????? ?????? ???????")
 st.markdown("قم برفع ملف الإكسيل المستخرج من أداة السكرابر لعرضه بتصميم تفاعلي.")
 
 uploaded_file = st.file_uploader("ارفع ملف الإكسيل أو الـ CSV هنا", type=["xlsx", "csv"])
