@@ -175,13 +175,13 @@ if uploaded_file is not None:
         social_html = ""
         for net in ['فيسبوك', 'انستجرام', 'تيك توك', 'تويتر / X', 'سناب شات', 'يوتيوب', 'لينكدإن']:
             links = row.get(net, '')
-            if links:
-                first_link = links.split(' | ')[0]
+            if links and str(links) != 'nan':
+                first_link = str(links).split(' | ')[0]
                 social_html += f'<a href="{first_link}" target="_blank" class="social-badge">{net}</a>'
                 
         wa_btn = ""
-        if whatsapp:
-            wa_link = whatsapp.split(' | ')[0]
+        if whatsapp and str(whatsapp) != 'nan':
+            wa_link = str(whatsapp).split(' | ')[0]
             wa_btn = f'<a href="{wa_link}" target="_blank" class="whatsapp-btn">💬 تواصل واتساب</a>'
             
         phones_val = phones if phones else 'لا يوجد'
