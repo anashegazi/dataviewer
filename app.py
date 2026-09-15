@@ -130,6 +130,23 @@ body {
     margin-left: 6px;
 }
 
+.hero-headline {
+    font-family: 'theyearofhandicrafts', sans-serif !important;
+    font-size: clamp(34px, 5.2vw, 62px);
+    line-height: 1.45;
+    margin-bottom: 18px;
+    font-weight: 800;
+}
+.gradient-text {
+    background: linear-gradient(135deg, #123C3A, #E2EC6C, #123C3A);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    animation: shine 6s linear infinite;
+}
+@keyframes shine { to { background-position: 220% center; } }
+
 .social-badge:hover {
     background-color: #E2EC6C;
     color: #123C3A;
@@ -150,11 +167,28 @@ body {
     margin-left: 6px;
 }
 
+.hero-headline {
+    font-family: 'theyearofhandicrafts', sans-serif !important;
+    font-size: clamp(34px, 5.2vw, 62px);
+    line-height: 1.45;
+    margin-bottom: 18px;
+    font-weight: 800;
+}
+.gradient-text {
+    background: linear-gradient(135deg, #123C3A, #E2EC6C, #123C3A);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    animation: shine 6s linear infinite;
+}
+@keyframes shine { to { background-position: 220% center; } }
+
 </style>
 '''
 , unsafe_allow_html=True)
 
-st.title("???? ???????? ?????????")
+st.markdown('<div style="text-align: center;"><div class="hero-headline gradient-text">???? ???????? ?????????</div></div>', unsafe_allow_html=True)
 st.markdown("قم برفع ملف الإكسيل المستخرج من أداة السكرابر لعرضه بتصميم تفاعلي.")
 
 uploaded_file = st.file_uploader("ارفع ملف الإكسيل أو الـ CSV هنا", type=["xlsx", "csv"])
