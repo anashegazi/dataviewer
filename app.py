@@ -183,14 +183,38 @@ body {
     animation: shine 6s linear infinite;
 }
 @keyframes shine { to { background-position: 220% center; } }
-
 .gallery-container {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     gap: 30px;
     padding-bottom: 20px;
 }
+.gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.15);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    font-size: 22px;
+    transition: all 0.3s;
+    z-index: 10;
+    backdrop-filter: blur(5px);
+}
+.gallery-arrow:hover {
+    background: #E2EC6C;
+    color: #123C3A;
+}
+.arrow-left { left: -15px; }
+.arrow-right { right: -15px; }
 .gallery-container .report-card {
     min-width: 90%;
     scroll-snap-align: center;
@@ -272,8 +296,18 @@ if uploaded_file is not None:
         emails_val = emails if emails else 'لا يوجد'
         social_val = social_html if social_html else '<span style="color:#999;">لا يوجد</span>'
         
-        html = f'''
-<div class="report-card">
+        nav_arrows = ""
+        if "معرض" in view_mode:
+            next_idx = idx + 1 if idx < len(df) - 1 else 0
+            prev_idx = idx - 1 if idx > 0 else len(df) - 1
+            nav_arrows = f"""
+            <a href="#card-{next_idx}" class="gallery-arrow arrow-left" title="التالي"><i class="fas fa-chevron-left"></i></a>
+            <a href="#card-{prev_idx}" class="gallery-arrow arrow-right" title="السابق"><i class="fas fa-chevron-right"></i></a>
+            """
+            
+        html = f"""
+<div id="card-{idx}" class="report-card">
+    {nav_arrows}
     <div class="report-header">
         <div class="company-info">
             <h2>{name if name else domain}</h2>
@@ -304,7 +338,7 @@ if uploaded_file is not None:
         </div>
     </div>
 </div>
-'''
+"""
         all_cards_html += html.replace('\n', '')
 
     if "معرض" in view_mode:
