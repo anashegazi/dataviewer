@@ -330,7 +330,7 @@ if uploaded_file is not None:
         
         if "معرض" in view_mode:
             with col_card:
-                st.markdown(html, unsafe_allow_html=True)
+                st.markdown(html.replace('\n', ''), unsafe_allow_html=True)
                 st.markdown(f"<p style='text-align:center; color:#888;'>البطاقة {st.session_state.card_idx + 1} من {len(df)}</p>", unsafe_allow_html=True)
         else:
-            st.markdown(html, unsafe_allow_html=True)
+            st.markdown(html.replace('\n', ''), unsafe_allow_html=True)
