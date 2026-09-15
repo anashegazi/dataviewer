@@ -1,17 +1,17 @@
-import streamlit as st
+﻿import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="Data Viewer", layout="wide")
 
 # Custom CSS for PDF style
-st.markdown("""
+st.markdown('''
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap");
 
 body {
     direction: rtl;
     text-align: right;
-    font-family: 'Tajawal', sans-serif;
+    font-family: "Tajawal", sans-serif;
     background-color: #F8F9FA;
 }
 .stApp {
@@ -139,12 +139,13 @@ body {
 }
 
 </style>
-""", unsafe_allow_html=True)
+'''
+, unsafe_allow_html=True)
 
-st.title("?? ???? ??????? ?????? ???????")
-st.markdown("?? ???? ??? ??????? ???????? ?? ???? ???????? ????? ?????? ??????.")
+st.title("📊 نظام استعراض بيانات المتاجر")
+st.markdown("قم برفع ملف الإكسيل المستخرج من أداة السكرابر لعرضه بتصميم تفاعلي.")
 
-uploaded_file = st.file_uploader("???? ??? ??????? ???", type=["xlsx", "csv"])
+uploaded_file = st.file_uploader("ارفع ملف الإكسيل أو الـ CSV هنا", type=["xlsx", "csv"])
 
 if uploaded_file is not None:
     if uploaded_file.name.endswith('.csv'):
@@ -158,65 +159,66 @@ if uploaded_file is not None:
         
     df = df.astype(str).replace('nan', '')
     
-    st.markdown(f"### ?? ?????? ??? {len(df)} ????")
+    st.markdown(f"### تم العثور على {len(df)} متجر")
     
     for idx, row in df.iterrows():
-        domain = row.get('???? ??????', '')
-        name = row.get('??? ??????', domain)
-        platform = row.get('???? ??????', '')
-        visits = row.get('???????? ??????? ?????????', '0')
-        revenue = row.get('?????? ?????? ???????? (SAR)', '')
-        phones = row.get('????? ???????', '')
-        whatsapp = row.get('???? ????????', '')
-        emails = row.get('????? ?????? ??????????', '')
+        domain = row.get('رابط الموقع', '')
+        name = row.get('اسم المتجر', domain)
+        platform = row.get('منصة المتجر', '')
+        visits = row.get('الزيارات الشهرية التقريبية', '0')
+        revenue = row.get('العائد الشهري التقريبي (SAR)', '')
+        phones = row.get('أرقام التواصل', '')
+        whatsapp = row.get('رابط الواتساب', '')
+        emails = row.get('رسائل البريد الإلكتروني', '')
         
         # Socials
         social_html = ""
-        for net in ['??????', '????????', '??? ???', '????? / X', '???? ???', '??????', '???????']:
+        for net in ['فيسبوك', 'انستجرام', 'تيك توك', 'تويتر / X', 'سناب شات', 'يوتيوب', 'لينكدإن']:
             links = row.get(net, '')
             if links:
                 first_link = links.split(' | ')[0]
                 social_html += f'<a href="{first_link}" target="_blank" class="social-badge">{net}</a>'
                 
-        # HTML Structure
-        html = f"""
-        <div class="report-card">
-            <div class="report-header">
-                <div class="company-info">
-                    <h2>{name if name else domain}</h2>
-                    <p>{domain} • {platform}</p>
-                </div>
-                <div class="visits-box">
-                    <div class="visits-label">???????? ??????? ????????</div>
-                    <div class="visits-number">{visits}</div>
-                    <div class="visits-label" style="font-size:14px; color:#A3B8B6;">?????? ???????: {revenue}</div>
-                </div>
-            </div>
-            
-            <div class="details-section">
-                <div class="detail-item">
-                    <div class="detail-title">????? ???????</div>
-                    <div class="detail-value" dir="ltr" style="text-align: right;">{phones if phones else '?? ????'}</div>
-        """
-        
+        wa_btn = ""
         if whatsapp:
             wa_link = whatsapp.split(' | ')[0]
-            html += f'<a href="{wa_link}" target="_blank" class="whatsapp-btn">?? ????? ??????</a>'
+            wa_btn = f'<a href="{wa_link}" target="_blank" class="whatsapp-btn">💬 تواصل واتساب</a>'
             
-        html += f"""
-                </div>
-                <div class="detail-item">
-                    <div class="detail-title">?????? ??????????</div>
-                    <div class="detail-value">{emails if emails else '?? ????'}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-title">??????? ??????????</div>
-                    <div class="social-links">
-                        {social_html if social_html else '<span style="color:#999;">?? ????</span>'}
-                    </div>
-                </div>
+        phones_val = phones if phones else 'لا يوجد'
+        emails_val = emails if emails else 'لا يوجد'
+        social_val = social_html if social_html else '<span style="color:#999;">لا يوجد</span>'
+        
+        html = f'''
+<div class="report-card">
+    <div class="report-header">
+        <div class="company-info">
+            <h2>{name if name else domain}</h2>
+            <p>{domain} • {platform}</p>
+        </div>
+        <div class="visits-box">
+            <div class="visits-label">الزيارات الشهرية المتوقعة</div>
+            <div class="visits-number">{visits}</div>
+            <div class="visits-label" style="font-size:14px; color:#A3B8B6;">العائد المتوقع: {revenue}</div>
+        </div>
+    </div>
+    
+    <div class="details-section">
+        <div class="detail-item">
+            <div class="detail-title">أرقام التواصل</div>
+            <div class="detail-value" dir="ltr" style="text-align: right;">{phones_val}</div>
+            {wa_btn}
+        </div>
+        <div class="detail-item">
+            <div class="detail-title">البريد الإلكتروني</div>
+            <div class="detail-value">{emails_val}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-title">الشبكات الاجتماعية</div>
+            <div class="social-links">
+                {social_val}
             </div>
         </div>
-        """
-        
+    </div>
+</div>
+'''
         st.markdown(html, unsafe_allow_html=True)
