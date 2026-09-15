@@ -1,4 +1,4 @@
-﻿import streamlit as st
+import streamlit as st
 import pandas as pd
 
 st.set_page_config(page_title="Data Viewer", layout="wide")
@@ -162,18 +162,16 @@ if uploaded_file is not None:
     df = df.replace('nan.0', '') # in case floats became strings like nan.0
     
     st.markdown(f"### تم العثور على {len(df)} متجر")
-    st.write("Columns found:", list(df.columns))
-    st.write("First row:", dict(df.iloc[0]) if len(df) > 0 else "")
     
     for idx, row in df.iterrows():
-        domain = row.get('رابط الموقع', '')
-        name = row.get('اسم المتجر', domain)
+        domain = row.get('رابط الموقع', row.get('الموقع (Domain)', ''))
+        name = row.get('اسم المتجر', row.get('عنوان المتجر', domain))
         platform = row.get('منصة المتجر', '')
-        visits = row.get('الزيارات الشهرية التقريبية', '0')
-        revenue = row.get('العائد الشهري التقريبي (SAR)', '')
+        visits = row.get('الزيارات الشهرية التقريبية', row.get('الزيارات', '0'))
+        revenue = row.get('العائد الشهري التقريبي (SAR)', row.get('العائد', ''))
         phones = row.get('أرقام التواصل', '')
         whatsapp = row.get('رابط الواتساب', '')
-        emails = row.get('رسائل البريد الإلكتروني', '')
+        emails = row.get('رسائل البريد الإلكتروني', row.get('البريد الإلكتروني', ''))
         
         # Socials
         social_html = ""
