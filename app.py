@@ -223,7 +223,7 @@ if uploaded_file is not None:
     
     view_mode = st.radio("طريقة العرض:", ["قائمة عمودية", "معرض أفقي (سحب)"], horizontal=True)
     
-    st.markdown(f"### تم العثور على {len(df)} متجر")
+    st.markdown(f"<h3 style='text-align: right; color: #123C3A; font-family: \"theyearofhandicrafts\", sans-serif; margin-bottom: 20px;'>تم العثور على {len(df)} متجر</h3>", unsafe_allow_html=True)
     
     if "معرض" in view_mode:
         if 'card_idx' not in st.session_state:
