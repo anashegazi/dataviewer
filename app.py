@@ -6,7 +6,8 @@ st.set_page_config(page_title="Data Viewer", layout="wide")
 # Custom CSS for PDF style
 st.markdown('''
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Tajawal:wght@400;500;700;800&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/mokhtarbsaid/rare-arabic-fonts/theyearofhandicrafts/all.min.css');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
 body {
@@ -50,6 +51,7 @@ body {
     font-weight: 800;
     margin: 0 0 10px 0;
     color: white;
+    font-family: 'theyearofhandicrafts', sans-serif;
 }
 
 .company-info p {
@@ -70,6 +72,7 @@ body {
     color: #E2EC6C;
     line-height: 1;
     margin-bottom: 5px;
+    font-family: 'Cairo', sans-serif;
 }
 
 .visits-label {
@@ -86,6 +89,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    font-family: 'Cairo', sans-serif;
 }
 
 .detail-item {
