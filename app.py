@@ -156,7 +156,7 @@ if uploaded_file is not None:
     else:
         df = pd.read_excel(uploaded_file)
         
-    df.fillna('', inplace=True)
+    df = df.astype(str).replace('nan', '')
     
     st.markdown(f"### ?? ?????? ??? {len(df)} ????")
     
