@@ -221,4 +221,4 @@ if uploaded_file is not None:
     </div>
 </div>
 '''
-        st.markdown(html, unsafe_allow_html=True)
+        st.markdown(html.replace('\n', ''), unsafe_allow_html=True)
