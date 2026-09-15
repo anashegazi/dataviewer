@@ -6,7 +6,8 @@ st.set_page_config(page_title="Data Viewer", layout="wide")
 # Custom CSS for PDF style
 st.markdown('''
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
 body {
     direction: rtl;
@@ -121,6 +122,9 @@ body {
     text-decoration: none;
     transition: all 0.2s;
 }
+.social-badge i, .whatsapp-btn i {
+    margin-left: 6px;
+}
 
 .social-badge:hover {
     background-color: #E2EC6C;
@@ -136,6 +140,10 @@ body {
     font-weight: 700;
     display: inline-block;
     margin-top: 10px;
+}
+
+.social-badge i, .whatsapp-btn i {
+    margin-left: 6px;
 }
 
 </style>
@@ -174,17 +182,27 @@ if uploaded_file is not None:
         emails = row.get('رسائل البريد الإلكتروني', row.get('البريد الإلكتروني', ''))
         
         # Socials
+        icon_map = {
+            'فيسبوك': 'fab fa-facebook',
+            'انستجرام': 'fab fa-instagram',
+            'تيك توك': 'fab fa-tiktok',
+            'تويتر / X': 'fa-brands fa-x-twitter',
+            'سناب شات': 'fab fa-snapchat',
+            'يوتيوب': 'fab fa-youtube',
+            'لينكدإن': 'fab fa-linkedin'
+        }
         social_html = ""
         for net in ['فيسبوك', 'انستجرام', 'تيك توك', 'تويتر / X', 'سناب شات', 'يوتيوب', 'لينكدإن']:
             links = row.get(net, '')
             if links and str(links) != 'nan':
                 first_link = str(links).split(' | ')[0]
-                social_html += f'<a href="{first_link}" target="_blank" class="social-badge">{net}</a>'
+                icon = icon_map.get(net, '')
+                social_html += f'<a href="{first_link}" target="_blank" class="social-badge"><i class="{icon}"></i> {net}</a>'
                 
         wa_btn = ""
         if whatsapp and str(whatsapp) != 'nan':
             wa_link = str(whatsapp).split(' | ')[0]
-            wa_btn = f'<a href="{wa_link}" target="_blank" class="whatsapp-btn">💬 تواصل واتساب</a>'
+            wa_btn = f'<a href="{wa_link}" target="_blank" class="whatsapp-btn"><i class="fab fa-whatsapp" style="font-size: 16px;"></i> تواصل واتساب</a>'
             
         phones_val = phones if phones else 'لا يوجد'
         emails_val = emails if emails else 'لا يوجد'
