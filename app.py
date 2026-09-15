@@ -157,7 +157,9 @@ if uploaded_file is not None:
     else:
         df = pd.read_excel(uploaded_file)
         
+    df.columns = df.columns.str.strip().str.replace('﻿', '')
     df = df.astype(str).replace('nan', '')
+    df = df.replace('nan.0', '') # in case floats became strings like nan.0
     
     st.markdown(f"### تم العثور على {len(df)} متجر")
     
