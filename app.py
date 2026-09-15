@@ -162,6 +162,8 @@ if uploaded_file is not None:
     df = df.replace('nan.0', '') # in case floats became strings like nan.0
     
     st.markdown(f"### تم العثور على {len(df)} متجر")
+    st.write("Columns found:", list(df.columns))
+    st.write("First row:", dict(df.iloc[0]) if len(df) > 0 else "")
     
     for idx, row in df.iterrows():
         domain = row.get('رابط الموقع', '')
