@@ -183,50 +183,14 @@ body {
     animation: shine 6s linear infinite;
 }
 @keyframes shine { to { background-position: 220% center; } }
-.gallery-container {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    gap: 30px;
-    padding-bottom: 20px;
-}
-.gallery-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.15);
-    color: white;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none !important;
-    font-size: 22px;
-    transition: all 0.3s;
-    z-index: 10;
-    backdrop-filter: blur(5px);
-}
-.gallery-arrow:hover {
-    background: #E2EC6C;
-    color: #123C3A;
-}
-.arrow-left { left: -15px; }
-.arrow-right { right: -15px; }
-.gallery-container .report-card {
-    min-width: 90%;
-    scroll-snap-align: center;
-    flex-shrink: 0;
-}
-.gallery-container::-webkit-scrollbar {
-    height: 12px;
-}
-.gallery-container::-webkit-scrollbar-thumb {
-    background: #123C3A;
-    border-radius: 6px;
-}
+
+
+
+
+
+
+
+
 .stRadio > label {
     font-family: 'Cairo', sans-serif !important;
     font-weight: bold;
@@ -258,8 +222,42 @@ if uploaded_file is not None:
     
     st.markdown(f"### تم العثور على {len(df)} متجر")
     
-    all_cards_html = ""
-    for idx, row in df.iterrows():
+    if "معرض" in view_mode:
+        if 'card_idx' not in st.session_state:
+            st.session_state.card_idx = 0
+            
+        # Ensure index is within bounds
+        if st.session_state.card_idx >= len(df):
+            st.session_state.card_idx = 0
+            
+        col_prev, col_card, col_next = st.columns([1, 10, 1])
+        
+        with col_next:
+            st.markdown("<br><br><br><br><br><br><br><br><br>", unsafe_allow_html=True)
+            if st.button("❯", key="next", use_container_width=True):
+                if st.session_state.card_idx < len(df) - 1:
+                    st.session_state.card_idx += 1
+                else:
+                    st.session_state.card_idx = 0
+                st.rerun()
+                
+        with col_prev:
+            st.markdown("<br><br><br><br><br><br><br><br><br>", unsafe_allow_html=True)
+            if st.button("❮", key="prev", use_container_width=True):
+                if st.session_state.card_idx > 0:
+                    st.session_state.card_idx -= 1
+                else:
+                    st.session_state.card_idx = len(df) - 1
+                st.rerun()
+                
+        # Render only the current card
+        row = df.iloc[st.session_state.card_idx]
+        cards_to_render = [(st.session_state.card_idx, row)]
+        
+    else:
+        cards_to_render = df.iterrows()
+
+    for idx, row in cards_to_render:
         domain = row.get('رابط الموقع', row.get('الموقع (Domain)', ''))
         name = row.get('اسم المتجر', row.get('عنوان المتجر', domain))
         platform = row.get('منصة المتجر', '')
@@ -296,18 +294,8 @@ if uploaded_file is not None:
         emails_val = emails if emails else 'لا يوجد'
         social_val = social_html if social_html else '<span style="color:#999;">لا يوجد</span>'
         
-        nav_arrows = ""
-        if "معرض" in view_mode:
-            next_idx = idx + 1 if idx < len(df) - 1 else 0
-            prev_idx = idx - 1 if idx > 0 else len(df) - 1
-            nav_arrows = f"""
-            <a href="#card-{next_idx}" class="gallery-arrow arrow-left" title="التالي"><i class="fas fa-chevron-left"></i></a>
-            <a href="#card-{prev_idx}" class="gallery-arrow arrow-right" title="السابق"><i class="fas fa-chevron-right"></i></a>
-            """
-            
         html = f"""
 <div id="card-{idx}" class="report-card">
-    {nav_arrows}
     <div class="report-header">
         <div class="company-info">
             <h2>{name if name else domain}</h2>
@@ -339,9 +327,10 @@ if uploaded_file is not None:
     </div>
 </div>
 """
-        all_cards_html += html.replace('\n', '')
-
-    if "معرض" in view_mode:
-        st.markdown(f'<div class="gallery-container">{all_cards_html}</div>', unsafe_allow_html=True)
-    else:
-        st.markdown(all_cards_html, unsafe_allow_html=True)
+        
+        if "معرض" in view_mode:
+            with col_card:
+                st.markdown(html, unsafe_allow_html=True)
+                st.markdown(f"<p style='text-align:center; color:#888;'>البطاقة {st.session_state.card_idx + 1} من {len(df)}</p>", unsafe_allow_html=True)
+        else:
+            st.markdown(html, unsafe_allow_html=True)
