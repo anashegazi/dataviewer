@@ -184,6 +184,29 @@ body {
 }
 @keyframes shine { to { background-position: 220% center; } }
 
+.gallery-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 30px;
+    padding-bottom: 20px;
+}
+.gallery-container .report-card {
+    min-width: 90%;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+}
+.gallery-container::-webkit-scrollbar {
+    height: 12px;
+}
+.gallery-container::-webkit-scrollbar-thumb {
+    background: #123C3A;
+    border-radius: 6px;
+}
+.stRadio > label {
+    font-family: 'Cairo', sans-serif !important;
+    font-weight: bold;
+}
 </style>
 '''
 , unsafe_allow_html=True)
@@ -207,8 +230,11 @@ if uploaded_file is not None:
     df = df.astype(str).replace('nan', '')
     df = df.replace('nan.0', '') # in case floats became strings like nan.0
     
+    view_mode = st.radio("طريقة العرض:", ["قائمة عمودية", "معرض أفقي (سحب)"], horizontal=True)
+    
     st.markdown(f"### تم العثور على {len(df)} متجر")
     
+    all_cards_html = ""
     for idx, row in df.iterrows():
         domain = row.get('رابط الموقع', row.get('الموقع (Domain)', ''))
         name = row.get('اسم المتجر', row.get('عنوان المتجر', domain))
@@ -279,4 +305,9 @@ if uploaded_file is not None:
     </div>
 </div>
 '''
-        st.markdown(html.replace('\n', ''), unsafe_allow_html=True)
+        all_cards_html += html.replace('\n', '')
+
+    if "معرض" in view_mode:
+        st.markdown(f'<div class="gallery-container">{all_cards_html}</div>', unsafe_allow_html=True)
+    else:
+        st.markdown(all_cards_html, unsafe_allow_html=True)
