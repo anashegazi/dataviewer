@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="???? ???????? ?????????", layout="wide")
+st.set_page_config(page_title="عارض البيانات المستخرجة", layout="wide")
 
 # Custom CSS for PDF style
 st.markdown('''
@@ -188,7 +188,7 @@ body {
 '''
 , unsafe_allow_html=True)
 
-st.markdown('<div style="text-align: center;"><div class="hero-headline gradient-text">???? ???????? ?????????</div></div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align: center;"><div class="hero-headline gradient-text">عارض البيانات المستخرجة</div></div>', unsafe_allow_html=True)
 st.markdown("قم برفع ملف الإكسيل المستخرج من أداة السكرابر لعرضه بتصميم تفاعلي.")
 
 uploaded_file = st.file_uploader("ارفع ملف الإكسيل أو الـ CSV هنا", type=["xlsx", "csv"])
